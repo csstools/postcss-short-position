@@ -1,0 +1,19 @@
+a {
+	-x-position: absolute;
+}
+
+b {
+	-x-position: absolute 1em;
+}
+
+c {
+	-x-position: absolute 1em 2em;
+}
+
+d {
+	-x-position: absolute 1em 2em 3em;
+}
+
+e {
+	-x-position: absolute 1em 2em 3em 4em;
+}

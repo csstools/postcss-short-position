@@ -1,0 +1,11 @@
+a {
+	position: var(--position, absolute);
+}
+
+b {
+	top: var(--top, 1em);
+	right: var(--top, 1em);
+	bottom: var(--top, 1em);
+	left: var(--top, 1em);
+	position: var(--position, absolute);
+}

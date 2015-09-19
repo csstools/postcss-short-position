@@ -1,0 +1,7 @@
+a {
+	position: var(--position, absolute);
+}
+
+b {
+	position: var(--position, absolute) var(--top, 1em);
+}

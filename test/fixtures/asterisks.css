@@ -1,0 +1,43 @@
+a {
+	position: absolute;
+}
+
+b {
+	position: *;
+}
+
+c {
+	position: absolute *;
+}
+
+d {
+	position: absolute 1em *;
+}
+
+e {
+	position: absolute * 1em;
+}
+
+f {
+	position: absolute 1em 2em *;
+}
+
+g {
+	position: absolute * 1em 2em;
+}
+
+h {
+	position: absolute 1em * *;
+}
+
+i {
+	position: absolute * * 1em;
+}
+
+j {
+	position: absolute 1em * 2em;
+}
+
+k {
+	position: absolute * 1em *;
+}
