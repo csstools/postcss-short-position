@@ -1,34 +1,92 @@
-var postcss = require('postcss');
+// tooling
+const postcss = require('postcss');
 
-module.exports = postcss.plugin('postcss-short-position', function (opts) {
-	var prefix = opts && opts.prefix ? '-' + opts.prefix + '-' : '';
-	var name   = 'position';
-	var match  = /^(inherit|initial|unset|absolute|fixed|relative|static|sticky|var\(.*\))$/;
+// side properties
+const properties = ['top', 'right', 'bottom', 'left'];
 
-	return function (css) {
-		css.walkDecls(prefix + name, function (decl) {
-			var edge = [];
-			var position;
+// position value pattern
+const positionMatch = /^(inherit|initial|unset|absolute|fixed|relative|static|sticky|var\(.+\))$/;
 
-			if (prefix) decl.prop = name;
+// plugin
+module.exports = postcss.plugin('postcss-short-position', ({
+	prefix = '',
+	skip   = '*'
+}) => {
+	// dashed prefix
+	const dashedPrefix = prefix ? '-' + prefix + '-' : '';
 
-			postcss.list.space(decl.value).forEach(function (value) {
-				if (!position && match.test(value)) position = value;
-				else edge.push(value);
+	// property pattern
+	const propertyMatch = new RegExp(`^${ dashedPrefix }(position)$`);
+
+	return (css) => {
+		// walk each matching declaration
+		css.walkDecls(propertyMatch, (decl) => {
+			// unprefixed property
+			const property = decl.prop.match(propertyMatch)[1];
+
+			// if a prefix is in use
+			if (prefix) {
+				// remove it from the property
+				decl.prop = property;
+			}
+
+			// position value
+			let position;
+
+			// space-separated values (top, right, bottom, left) sans the position value
+			const values = postcss.list.space(decl.value).filter((value) => {
+				// whether the value is a position
+				const isPosition = !position && positionMatch.test(value);
+
+				// if the value is a position
+				if (isPosition) {
+					// update the position value
+					position = value;
+				}
+
+				// return whether the value was not a position (a side)
+				return !isPosition;
 			});
 
-			if (edge.length) {
-				if (!edge[1]) edge[1] = edge[0];
-				if (!edge[2]) edge[2] = edge[0];
-				if (!edge[3]) edge[3] = edge[1];
+			// conditionally add a top value
+			if (values.length === 0) {
+				values.push(skip);
+			}
 
-				if (edge[0] !== '*') decl.cloneBefore({ prop: 'top',    value: edge[0] });
-				if (edge[1] !== '*') decl.cloneBefore({ prop: 'right',  value: edge[1] });
-				if (edge[2] !== '*') decl.cloneBefore({ prop: 'bottom', value: edge[2] });
-				if (edge[3] !== '*') decl.cloneBefore({ prop: 'left',   value: edge[3] });
+			// conditionally add a right value
+			if (values.length === 1) {
+				values.push(values[0]);
+			}
 
-				if (position) decl.value = position;
-				else decl.remove();
+			// conditionally add a bottom value
+			if (values.length === 2) {
+				values.push(values[0]);
+			}
+
+			// conditionally add a left value
+			if (values.length === 3) {
+				values.push(values[1]);
+			}
+
+			// for each side property
+			properties.forEach((side, index) => {
+				// if the value is not a skip token
+				if (values[index] !== skip) {
+					// create a new declaration for the side property
+					decl.cloneBefore({
+						prop:  side,
+						value: values[index]
+					});
+				}
+			});
+
+			// if there is a position value
+			if (position) {
+				// update the position value
+				decl.value = position;
+			} else {
+				// otherwise, remove the original position declaration
+				decl.remove();
 			}
 		});
 	};

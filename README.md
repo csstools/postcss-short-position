@@ -1,33 +1,50 @@
-# Shorthand Position [![Build Status][ci-img]][ci]
+# Position Shorthand <a href="https://github.com/postcss/postcss"><img src="https://postcss.github.io/postcss/logo.svg" alt="PostCSS Logo" width="90" height="90" align="right"></a>
 
-<img align="right" width="135" height="95" src="http://postcss.github.io/postcss/logo-leftp.png" title="Philosopher’s stone, logo of PostCSS">
+[![NPM Version][npm-img]][npm-url]
+[![Build Status][cli-img]][cli-url]
+[![Licensing][lic-image]][lic-url]
+[![Changelog][log-image]][log-url]
+[![Gitter Chat][git-image]][git-url]
 
-[Shorthand Position] is a [PostCSS] plugin that lets you to define edges inside the position property in CSS.
+[Position Shorthand] lets you define sides within the `position` property in CSS, following the [1-to-4 syntax] to target `top`, `right`, `bottom`, and `left`.
 
 ```css
 /* before */
 
-.banner {
-    position: fixed 0 0 *;
+.example-1 {
+    position: fixed 0 1em;
 }
 
 /* after */
 
-.banner {
+.example-1 {
     top: 0;
-    right: 0;
-    left: 0;
+    right: 1em;
+    bottom: 0;
+    left: 1em;
     position: fixed;
 }
 ```
 
-Edges follow the [1-to-4 syntax] and become `top`, `right`, `bottom`, and `left` properties. An asterisk (`*`) indicates that the edge is to be skipped.
+## Options
+
+#### `prefix`
+
+Type: `String`  
+Default: `""`
+
+Adds an optional prefix to the `position` property (e.g. `"x"` for `-x-position`). Wrapping dashes (`-`) are automatically applied.
+
+#### `skip`
+
+Type: `String`  
+Default: `"*"`
+
+Specifies the skip token used to ignore a length.
 
 ## Usage
 
-Follow these steps to use [Shorthand Position].
-
-Add [Shorthand Position] to your build tool:
+Add [Position Shorthand] to your build tool:
 
 ```bash
 npm install postcss-short-position --save-dev
@@ -36,7 +53,7 @@ npm install postcss-short-position --save-dev
 #### Node
 
 ```js
-require('postcss-short-position')({ /* options */ }).process(YOUR_CSS);
+require('postcss-short-position').process(YOUR_CSS, { /* options */ });
 ```
 
 #### PostCSS
@@ -47,12 +64,12 @@ Add [PostCSS] to your build tool:
 npm install postcss --save-dev
 ```
 
-Load [Shorthand Position] as a PostCSS plugin:
+Load [Position Shorthand] as a PostCSS plugin:
 
 ```js
 postcss([
-    require('postcss-short-position')({ /* options */ })
-]);
+	require('postcss-short-position')({ /* options */ })
+]).process(YOUR_CSS, /* options */);
 ```
 
 #### Gulp
@@ -63,19 +80,19 @@ Add [Gulp PostCSS] to your build tool:
 npm install gulp-postcss --save-dev
 ```
 
-Enable [Shorthand Position] within your Gulpfile:
+Enable [Position Shorthand] within your Gulpfile:
 
 ```js
 var postcss = require('gulp-postcss');
 
 gulp.task('css', function () {
-    return gulp.src('./css/src/*.css').pipe(
-        postcss([
-            require('postcss-short-position')({ /* options */ })
-        ])
-    ).pipe(
-        gulp.dest('./css')
-    );
+	return gulp.src('./src/*.css').pipe(
+		postcss([
+			require('postcss-short-position')({ /* options */ })
+		])
+	).pipe(
+		gulp.dest('.')
+	);
 });
 ```
 
@@ -87,38 +104,38 @@ Add [Grunt PostCSS] to your build tool:
 npm install grunt-postcss --save-dev
 ```
 
-Enable [Shorthand Position] within your Gruntfile:
+Enable [Position Shorthand] within your Gruntfile:
 
 ```js
 grunt.loadNpmTasks('grunt-postcss');
 
 grunt.initConfig({
-    postcss: {
-        options: {
-            processors: [
-                require('postcss-short-position')({ /* options */ })
-            ]
-        },
-        dist: {
-            src: 'css/*.css'
-        }
-    }
+	postcss: {
+		options: {
+			use: [
+				require('postcss-short-position')({ /* options */ })
+			]
+		},
+		dist: {
+			src: '*.css'
+		}
+	}
 });
 ```
 
-## Options
+[npm-url]: https://www.npmjs.com/package/postcss-short-position
+[npm-img]: https://img.shields.io/npm/v/postcss-short-position.svg
+[cli-url]: https://travis-ci.org/jonathantneal/postcss-short-position
+[cli-img]: https://img.shields.io/travis/jonathantneal/postcss-short-position.svg
+[lic-url]: LICENSE.md
+[lic-image]: https://img.shields.io/npm/l/postcss-short-position.svg
+[log-url]: CHANGELOG.md
+[log-image]: https://img.shields.io/badge/changelog-md-blue.svg
+[git-url]: https://gitter.im/postcss/postcss
+[git-image]: https://img.shields.io/badge/chat-gitter-blue.svg
 
-#### `prefix`
-
-Type: `String`  
-Default: `null`
-
-Specifies a prefix to be surrounded by dashes before the declaration (e.g. `-x-position`).
-
-[1-to-4 syntax]: https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties#Tricky_edge_cases
-[ci]: https://travis-ci.org/jonathantneal/postcss-short-position
-[ci-img]: https://travis-ci.org/jonathantneal/postcss-short-position.svg
+[Position Shorthand]: https://github.com/jonathantneal/postcss-short-position
+[PostCSS]: https://github.com/postcss/postcss
 [Gulp PostCSS]: https://github.com/postcss/gulp-postcss
 [Grunt PostCSS]: https://github.com/nDmitry/grunt-postcss
-[PostCSS]: https://github.com/postcss/postcss
-[Shorthand Position]: https://github.com/jonathantneal/postcss-short-position
+[1-to-4 syntax]: https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties#Tricky_edge_cases
