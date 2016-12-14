@@ -11,9 +11,9 @@ const positionMatch = /^(inherit|initial|unset|absolute|fixed|relative|static|st
 module.exports = postcss.plugin('postcss-short-position', ({
 	prefix = '',
 	skip   = '*'
-}) => {
+} = {}) => {
 	// dashed prefix
-	const dashedPrefix = prefix ? '-' + prefix + '-' : '';
+	const dashedPrefix = prefix ? `-${ prefix }-` : '';
 
 	// property pattern
 	const propertyMatch = new RegExp(`^${ dashedPrefix }(position)$`);
@@ -91,3 +91,10 @@ module.exports = postcss.plugin('postcss-short-position', ({
 		});
 	};
 });
+
+// override plugin#process
+module.exports.process = function (cssString, pluginOptions, processOptions) {
+	return postcss([
+		0 in arguments ? module.exports(pluginOptions) : module.exports()
+	]).process(cssString, processOptions);
+};
