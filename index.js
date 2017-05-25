@@ -1,3 +1,5 @@
+'use strict';
+
 // tooling
 const postcss = require('postcss');
 
@@ -8,10 +10,11 @@ const properties = ['top', 'right', 'bottom', 'left'];
 const positionMatch = /^(inherit|initial|unset|absolute|fixed|relative|static|sticky|var\(.+\))$/;
 
 // plugin
-module.exports = postcss.plugin('postcss-short-position', ({
-	prefix = '',
-	skip   = '*'
-} = {}) => {
+module.exports = postcss.plugin('postcss-short-position', (opts) => {
+	// options
+	const prefix = opts && 'prefix' in opts ? opts.prefix : '';
+	const skip = opts && 'skip' in opts ? opts.skip : '*';
+
 	// dashed prefix
 	const dashedPrefix = prefix ? `-${ prefix }-` : '';
 
@@ -91,10 +94,3 @@ module.exports = postcss.plugin('postcss-short-position', ({
 		});
 	};
 });
-
-// override plugin#process
-module.exports.process = function (cssString, pluginOptions, processOptions) {
-	return postcss([
-		0 in arguments ? module.exports(pluginOptions) : module.exports()
-	]).process(cssString, processOptions);
-};

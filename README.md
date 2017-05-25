@@ -1,10 +1,9 @@
-# Position Shorthand <a href="https://github.com/postcss/postcss"><img src="https://postcss.github.io/postcss/logo.svg" alt="PostCSS Logo" width="90" height="90" align="right"></a>
+# Position Shorthand [<img src="https://postcss.github.io/postcss/logo.svg" alt="PostCSS Logo" width="90" height="90" align="right">][postcss]
 
 [![NPM Version][npm-img]][npm-url]
 [![Build Status][cli-img]][cli-url]
-[![Licensing][lic-image]][lic-url]
-[![Changelog][log-image]][log-url]
-[![Gitter Chat][git-image]][git-url]
+[![Windows Build Status][win-img]][win-url]
+[![Gitter Chat][git-img]][git-url]
 
 [Position Shorthand] lets you define sides within the `position` property in CSS, following the [1-to-4 syntax] to target `top`, `right`, `bottom`, and `left`.
 
@@ -68,7 +67,7 @@ Load [Position Shorthand] as a PostCSS plugin:
 
 ```js
 postcss([
-	require('postcss-short-position')({ /* options */ })
+  require('postcss-short-position')({ /* options */ })
 ]).process(YOUR_CSS, /* options */);
 ```
 
@@ -86,13 +85,13 @@ Enable [Position Shorthand] within your Gulpfile:
 var postcss = require('gulp-postcss');
 
 gulp.task('css', function () {
-	return gulp.src('./src/*.css').pipe(
-		postcss([
-			require('postcss-short-position')({ /* options */ })
-		])
-	).pipe(
-		gulp.dest('.')
-	);
+  return gulp.src('./src/*.css').pipe(
+    postcss([
+      require('postcss-short-position')({ /* options */ })
+    ])
+  ).pipe(
+    gulp.dest('.')
+  );
 });
 ```
 
@@ -110,16 +109,16 @@ Enable [Position Shorthand] within your Gruntfile:
 grunt.loadNpmTasks('grunt-postcss');
 
 grunt.initConfig({
-	postcss: {
-		options: {
-			use: [
-				require('postcss-short-position')({ /* options */ })
-			]
-		},
-		dist: {
-			src: '*.css'
-		}
-	}
+  postcss: {
+    options: {
+      use: [
+        require('postcss-short-position')({ /* options */ })
+      ]
+    },
+    dist: {
+      src: '*.css'
+    }
+  }
 });
 ```
 
@@ -127,12 +126,10 @@ grunt.initConfig({
 [npm-img]: https://img.shields.io/npm/v/postcss-short-position.svg
 [cli-url]: https://travis-ci.org/jonathantneal/postcss-short-position
 [cli-img]: https://img.shields.io/travis/jonathantneal/postcss-short-position.svg
-[lic-url]: LICENSE.md
-[lic-image]: https://img.shields.io/npm/l/postcss-short-position.svg
-[log-url]: CHANGELOG.md
-[log-image]: https://img.shields.io/badge/changelog-md-blue.svg
+[win-url]: https://ci.appveyor.com/project/jonathantneal/postcss-short-position
+[win-img]: https://img.shields.io/appveyor/ci/jonathantneal/postcss-short-position.svg
 [git-url]: https://gitter.im/postcss/postcss
-[git-image]: https://img.shields.io/badge/chat-gitter-blue.svg
+[  git-img]: https://img.shields.io/badge/chat-gitter-blue.svg
 
 [Position Shorthand]: https://github.com/jonathantneal/postcss-short-position
 [PostCSS]: https://github.com/postcss/postcss
