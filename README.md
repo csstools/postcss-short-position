@@ -5,24 +5,25 @@
 [![Support Chat][git-img]][git-url]
 
 [PostCSS Short Position] lets define sides within the `position` property in
-CSS, following the [1-to-4 syntax] to target `top`, `right`, `bottom`, and
-`left`.
+CSS.
 
 ```pcss
 .header {
-    position: fixed 0 1em;
+  position: fixed 0 1em *;
 }
 
 /* becomes */
 
 .header {
-    top: 0;
-    right: 1em;
-    bottom: 0;
-    left: 1em;
-    position: fixed;
+  top: 0;
+  right: 1em;
+  left: 1em;
+  position: fixed;
 }
 ```
+
+The `position` declaration can be extended with the [1-to-4 syntax] to target
+`top`, `right`, `bottom`, and `left`. Sides can be omitted using the skip token.
 
 ## Usage
 
@@ -62,6 +63,57 @@ postcss([
 [git-url]: https://gitter.im/postcss/postcss
 [npm-img]: https://img.shields.io/npm/v/postcss-short-position.svg
 [npm-url]: https://www.npmjs.com/package/postcss-short-position
+
+## Options
+
+#### prefix
+
+The `prefix` option defines a prefix required by properties being transformed.
+Wrapping dashes are automatically applied, so that `x` would transform
+`-x-position`.
+
+```js
+postcssShortPosition({ prefix: 'x' });
+```
+
+```pcss
+.header {
+  x-position: fixed 0 1em *;
+}
+
+/* becomes */
+
+.header {
+  top: 0;
+  right: 1em;
+  left: 1em;
+  position: fixed;
+}
+```
+
+#### skip
+
+The `skip` option defines the skip token used to ignore portions of the
+shorthand.
+
+```js
+postcssShortPosition({ skip: '-' });
+```
+
+```pcss
+.header {
+  position: fixed 0 1em -;
+}
+
+/* becomes */
+
+.header {
+  top: 0;
+  right: 1em;
+  left: 1em;
+  position: fixed;
+}
+```
 
 [1-to-4 syntax]: https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties#Tricky_edge_cases
 [PostCSS]: https://github.com/postcss/postcss

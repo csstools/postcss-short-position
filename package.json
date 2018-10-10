@@ -1,6 +1,6 @@
 {
   "name": "postcss-short-position",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Define sides within the position property in CSS",
   "author": "Jonathan Neal <jonathantneal@hotmail.com>",
   "license": "CC0-1.0",
