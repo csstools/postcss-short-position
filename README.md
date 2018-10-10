@@ -63,5 +63,6 @@ postcss([
 [npm-img]: https://img.shields.io/npm/v/postcss-short-position.svg
 [npm-url]: https://www.npmjs.com/package/postcss-short-position
 
+[1-to-4 syntax]: https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties#Tricky_edge_cases
 [PostCSS]: https://github.com/postcss/postcss
 [PostCSS Short Position]: https://github.com/jonathantneal/postcss-short-position
