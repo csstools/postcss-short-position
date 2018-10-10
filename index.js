@@ -1,31 +1,17 @@
-'use strict';
+import postcss from 'postcss';
 
-// tooling
-const postcss = require('postcss');
-
-// side properties
-const properties = ['top', 'right', 'bottom', 'left'];
-
-// position value pattern
-const positionMatch = /^(inherit|initial|unset|absolute|fixed|relative|static|sticky|var\(.+\))$/;
-
-// plugin
-module.exports = postcss.plugin('postcss-short-position', (opts) => {
-	// options
-	const prefix = opts && 'prefix' in opts ? opts.prefix : '';
-	const skip = opts && 'skip' in opts ? opts.skip : '*';
-
-	// dashed prefix
-	const dashedPrefix = prefix ? `-${ prefix }-` : '';
+export default postcss.plugin('postcss-short-position', opts => {
+	const prefix = 'prefix' in Object(opts) ? `-${opts.prefix}-` : '';
+	const skip = 'skip' in Object(opts) ? String(opts.skip) : '*';
 
 	// property pattern
-	const propertyMatch = new RegExp(`^${ dashedPrefix }(position)$`);
+	const propertyMatch = new RegExp(`^${prefix}(position)$`);
 
-	return (css) => {
+	return root => {
 		// walk each matching declaration
-		css.walkDecls(propertyMatch, (decl) => {
+		root.walkDecls(propertyMatch, decl => {
 			// unprefixed property
-			const property = decl.prop.match(propertyMatch)[1];
+			const [, property] = decl.prop.match(propertyMatch);
 
 			// if a prefix is in use
 			if (prefix) {
@@ -37,7 +23,7 @@ module.exports = postcss.plugin('postcss-short-position', (opts) => {
 			let position;
 
 			// space-separated values (top, right, bottom, left) sans the position value
-			const values = postcss.list.space(decl.value).filter((value) => {
+			const values = postcss.list.space(decl.value).filter(value => {
 				// whether the value is a position
 				const isPosition = !position && positionMatch.test(value);
 
@@ -94,3 +80,9 @@ module.exports = postcss.plugin('postcss-short-position', (opts) => {
 		});
 	};
 });
+
+// side properties
+const properties = ['top', 'right', 'bottom', 'left'];
+
+// position value pattern
+const positionMatch = /^(inherit|initial|unset|absolute|fixed|relative|static|sticky|var\(.+\))$/;
